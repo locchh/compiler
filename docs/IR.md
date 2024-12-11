@@ -1,3 +1,292 @@
+## Q7
+
+Several large language models (LLMs) and frameworks are particularly good at generating JSON output. Here are a few you might find useful:
+
+1. **GPT models (OpenAI)**: Models like GPT-4 and GPT-3.5-turbo are highly capable of generating structured JSON outputs, especially when paired with a well-defined schema in the prompt. You can enforce schemas using libraries like Pydantic for additional structure.
+
+2. **Super JSON Mode**: This Python framework enables fast and accurate JSON generation by leveraging the parallelism of LLMs and treating each JSON key as an independent task. It supports both OpenAI's API and open-source LLMs via Hugging Face Transformers. It optimizes efficiency by avoiding redundant generation of predictable syntax and running parallel queries. Learn more and install it via [Super JSON Mode on GitHub](https://github.com/varunshenoy/super-json-mode).
+
+3. **Mistral-7B with LoRA fine-tuning (Predibase)**: Predibase has demonstrated JSON schema enforcement using Mistral-7B paired with LoRA fine-tuning. This approach generates JSON outputs adhering to a predefined schema and is adaptable to tasks such as named entity extraction. You can explore more about this technique on the [Predibase blog](https://predibase.com/blog).
+
+4. **Hugging Face's Transformers**: Many pre-trained models hosted on Hugging Face, such as those fine-tuned for structured data extraction, can be prompted effectively to produce JSON. For example, you can use models tailored for tasks like summarization or entity recognition and adapt them to output JSON.
+
+Each of these options can be chosen depending on your requirements for latency, accuracy, and the complexity of the JSON structure.
+
+## Q6
+
+Choosing between a JSON-based Intermediate Representation (IR) and LLVM IR for migrating from one programming language to another depends on several factors, including the level of abstraction, complexity of the migration, and the specific requirements of the project.
+
+---
+
+### **JSON-Based IR**
+#### **Advantages:**
+1. **High-Level Abstraction**: JSON-based IR is closer to the source language's semantics, making it easier to represent high-level constructs like loops, conditions, and operations without worrying about hardware or low-level details.
+2. **Human-Readable**: The JSON format is simple and easy to understand, debug, and modify, which is useful for iterative migration processes.
+3. **Language-Neutral**: Suitable for source-to-source translations, as it can be designed to support constructs from multiple programming languages (e.g., COBOL, ALGOL, or Java).
+4. **Extensibility**: Can be tailored to specific use cases, such as incorporating domain-specific constructs or metadata relevant for migration.
+5. **Rapid Prototyping**: Allows for quick creation and validation of transformation pipelines during the migration.
+
+#### **Limitations:**
+- **No Optimizations**: Lacks advanced features for code optimization or execution.
+- **Not Directly Executable**: Requires further processing to generate executable code.
+
+---
+
+### **LLVM IR**
+#### **Advantages:**
+1. **Low-Level Precision**: LLVM IR provides a detailed, machine-like representation that is closer to the executable form, allowing for fine-grained control over the migration process.
+2. **Optimization Capabilities**: Built-in optimization passes make LLVM IR ideal for improving the performance of the translated code.
+3. **Execution Readiness**: LLVM IR can be compiled into machine code directly, which is useful for languages where performance is critical.
+4. **Mature Ecosystem**: Includes tools for analysis, debugging, and optimization, making it robust for complex projects.
+
+#### **Limitations:**
+- **Steep Learning Curve**: Requires familiarity with low-level programming concepts and LLVM's specifics.
+- **Complexity**: Handling high-level language constructs in LLVM IR can be cumbersome and error-prone due to its low-level nature.
+- **Less Suitable for High-Level Transformations**: Adapting features like COBOL's verbose syntax or ALGOL's structured programming directly to LLVM IR can be challenging.
+
+---
+
+### **Comparison Based on Use Case**
+| **Criterion**                | **JSON-Based IR**                    | **LLVM IR**                          |
+|-------------------------------|---------------------------------------|--------------------------------------|
+| **Abstraction Level**         | High-level                           | Low-level                           |
+| **Ease of Use**               | Easy to understand and extend        | Requires expertise                  |
+| **Optimizations**             | None                                 | Extensive                           |
+| **Performance Sensitivity**   | Suitable for functional correctness  | Suitable for performance-critical   |
+| **Source Language Suitability**| Works well with verbose/high-level languages like COBOL | Better for low-level or compiled languages like C |
+| **Target Language**           | Ideal for high-level languages like Python or Java | Ideal for performance-focused languages like Rust |
+| **Ecosystem and Tooling**     | Minimal                              | Rich ecosystem                      |
+
+---
+
+### **Recommendation**
+- **Use JSON-Based IR**: If the migration involves high-level languages and the goal is to refactor or modernize code (e.g., COBOL to Java or Python). JSON-based IR is ideal for managing complex control structures, business logic, and verbose syntax common in legacy languages.
+- **Use LLVM IR**: If the migration involves performance-critical applications or compiled languages (e.g., Fortran to C++ or Rust). LLVM IR's optimization features and execution readiness are beneficial in such cases.
+
+In practice, combining both approaches can be effective. Start with a JSON-based IR for initial transformations and higher-level migrations, and then use LLVM IR for optimizing the final output or when translating to performance-oriented languages.
+
+## Q5
+
+The two intermediate representations (IRs) you provided serve similar purposes—to describe a program’s logic in a language-neutral format—but differ significantly in abstraction level, structure, and use cases.
+
+---
+
+### **1. JSON-Based IR**
+```json
+{
+  "programName": "AddTwoNumbers",
+  "variables": [
+    { "name": "NUM1", "type": "int", "value": 10 },
+    { "name": "NUM2", "type": "int", "value": 20 },
+    { "name": "RESULT", "type": "int" }
+  ],
+  "operations": [
+    { "type": "compute", "target": "RESULT", "expression": "NUM1 + NUM2" },
+    { "type": "display", "message": "The result is: ", "value": "RESULT" },
+    { "type": "stop" }
+  ]
+}
+```
+
+#### **Characteristics**
+- **Abstraction Level**: High-level IR.
+  - Describes the program's structure and semantics in terms of operations (e.g., "compute", "display") without concern for hardware or runtime specifics.
+  - Focuses on readability and language-neutral representation.
+- **Human-Friendly**: Easy to understand and edit by humans, useful for application-level transformations.
+- **Flexibility**: Can be extended to support constructs from various languages.
+- **Execution**: Not executable directly; requires further transformation into executable code or a lower-level IR (e.g., LLVM IR or bytecode).
+- **Use Case**:
+  - Ideal for source-to-source translation (e.g., COBOL to Java).
+  - Acts as an intermediate step in compiler pipelines where high-level transformations are needed.
+  - Can be easily serialized for tools like code analysis, refactoring, or migration frameworks.
+
+---
+
+### **2. LLVM IR**
+```llvm
+; ModuleID = 'AddNumbers'
+source_filename = "AddNumbers.cob"
+
+@NUM1 = global i32 10, align 4
+@NUM2 = global i32 20, align 4
+@RESULT = global i32 0, align 4
+
+define void @main() {
+entry:
+  %num1 = load i32, i32* @NUM1
+  %num2 = load i32, i32* @NUM2
+  %sum = add i32 %num1, %num2
+  store i32 %sum, i32* @RESULT
+  
+  ; Print the result
+  call void @print_result(i32 %sum)
+  
+  ret void
+}
+
+declare void @print_result(i32)
+```
+
+#### **Characteristics**
+- **Abstraction Level**: Low-level IR.
+  - Closer to machine code; operations and memory management are explicit.
+  - Includes details about memory layout (e.g., alignment) and data loading/storing.
+- **Human-Readable but Technical**: Understandable by developers familiar with compilers, but more verbose and complex than JSON.
+- **Hardware-Targeted**: Optimized for execution on real hardware or virtual machines.
+- **Execution**:
+  - Directly executable in environments like the LLVM runtime or can be compiled into machine code by LLVM's backend.
+- **Use Case**:
+  - Designed for optimization and code generation.
+  - Useful in compilers for languages like C, Rust, and Swift.
+  - Acts as a bridge between high-level language constructs and machine code.
+
+---
+
+### **Key Differences**
+
+| Aspect              | JSON-Based IR                                | LLVM IR                                   |
+|---------------------|---------------------------------------------|------------------------------------------|
+| **Abstraction Level** | High-level, language-neutral                 | Low-level, closer to hardware execution  |
+| **Semantics**        | Focuses on operations like "compute", "display" | Explicitly handles memory, registers, and types |
+| **Execution**        | Cannot be directly executed                  | Can be executed by LLVM or compiled to machine code |
+| **Purpose**          | Simplifies program transformation, migration | Optimizes and compiles code for execution |
+| **Readability**      | Simple and human-readable                    | Technical and detailed                   |
+| **Flexibility**      | Easily extended for language-specific features | Tied to LLVM's semantics and structure   |
+| **Optimization**     | None; meant for translation and refactoring  | Extensive optimizations available        |
+| **Use Case**         | Source-to-source migration                   | Backend of compilers for execution       |
+
+---
+
+### **When to Use Which**
+- **JSON-Based IR**:
+  - When working with high-level transformations or source-to-source migrations (e.g., COBOL to Java).
+  - For projects that prioritize human readability and simplicity.
+  - For custom toolchains where flexibility and extensibility are key.
+
+- **LLVM IR**:
+  - When optimizing code for execution or targeting a specific platform.
+  - For use in traditional compiler pipelines.
+  - When integrating with LLVM's extensive tooling for analysis and optimization.
+
+---
+
+In summary, JSON-based IR is high-level and ideal for language-agnostic migrations, while LLVM IR is a low-level representation optimized for execution and compiler use cases. Combining them (e.g., translating JSON-based IR into LLVM IR) can create a complete pipeline for modernizing legacy code while ensuring performance and compatibility.
+
+## Q4
+
+Migrating COBOL to Java using an **Intermediate Representation (IR)** involves several steps: parsing the COBOL code, generating IR that captures the semantics of the COBOL constructs, and then generating equivalent Java code from the IR. Below is an example illustrating this process:
+
+---
+
+### **COBOL Code Example**
+Here’s a simple COBOL program that calculates and prints the sum of two numbers:
+
+```cobol
+IDENTIFICATION DIVISION.
+PROGRAM-ID. AddTwoNumbers.
+
+DATA DIVISION.
+WORKING-STORAGE SECTION.
+01 NUM1 PIC 9(4) VALUE 10.
+01 NUM2 PIC 9(4) VALUE 20.
+01 RESULT PIC 9(4).
+
+PROCEDURE DIVISION.
+    COMPUTE RESULT = NUM1 + NUM2.
+    DISPLAY "The result is: " RESULT.
+    STOP RUN.
+```
+
+---
+
+### **Step 1: Parse the COBOL Code**
+Use a parser like **ANTLR** with a COBOL grammar to generate a structured representation, such as an **Abstract Syntax Tree (AST)**.
+
+Example AST for the above program:
+```plaintext
+Program
+├── DataDivision
+│   ├── Variable NUM1 (Type: Integer, Initial Value: 10)
+│   ├── Variable NUM2 (Type: Integer, Initial Value: 20)
+│   └── Variable RESULT (Type: Integer)
+└── ProcedureDivision
+    ├── Assignment RESULT = NUM1 + NUM2
+    ├── Display "The result is: " + RESULT
+    └── Stop
+```
+
+---
+
+### **Step 2: Generate an Intermediate Representation (IR)**
+Transform the AST into an IR that abstracts COBOL constructs into general-purpose operations. For example:
+
+**Custom IR Example:**
+```json
+{
+  "programName": "AddTwoNumbers",
+  "variables": [
+    { "name": "NUM1", "type": "int", "value": 10 },
+    { "name": "NUM2", "type": "int", "value": 20 },
+    { "name": "RESULT", "type": "int" }
+  ],
+  "operations": [
+    { "type": "compute", "target": "RESULT", "expression": "NUM1 + NUM2" },
+    { "type": "display", "message": "The result is: ", "value": "RESULT" },
+    { "type": "stop" }
+  ]
+}
+```
+
+This IR captures the program’s structure and semantics in a language-agnostic way.
+
+---
+
+### **Step 3: Generate Java Code from the IR**
+Use the IR to produce equivalent Java code:
+
+**Generated Java Code:**
+```java
+public class AddTwoNumbers {
+    public static void main(String[] args) {
+        // Variables
+        int NUM1 = 10;
+        int NUM2 = 20;
+        int RESULT;
+
+        // Compute result
+        RESULT = NUM1 + NUM2;
+
+        // Display result
+        System.out.println("The result is: " + RESULT);
+
+        // Stop (implicit in Java)
+    }
+}
+```
+
+---
+
+### **Step 4: Verification**
+1. **Behavioral Testing**: Run the Java code and compare its output to the original COBOL program's output.
+2. **IR Consistency**: Ensure that the IR faithfully represents the COBOL program’s logic.
+
+---
+
+### **Tools and Frameworks**
+1. **ANTLR**: Use a COBOL grammar to parse the COBOL code.
+2. **LLVM or MLIR**: For a lower-level IR, translate COBOL into LLVM IR and then generate Java from LLVM IR using tools like LLVM-backed transpilers.
+3. **Custom Frameworks**: Build or use an existing custom tool to directly handle COBOL-to-Java migration.
+
+---
+
+### **Advantages of Using IR**
+- **Modularity:** The IR acts as an intermediary, making it easier to target multiple languages (e.g., COBOL to Java, Python, etc.).
+- **Optimization:** Perform language-independent optimizations at the IR level.
+- **Error Detection:** Identify issues early during IR generation.
+
+This approach ensures systematic and consistent migration, making it easier to modernize COBOL systems to Java or other modern languages.
+
+
 ## Q3
 
 Migrating COBOL to Java via LLVM IR is a complex process since LLVM IR is a low-level representation that doesn’t directly support high-level constructs typical in COBOL or Java (e.g., file handling, business logic constructs). However, this process can be achieved by:
