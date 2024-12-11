@@ -8,6 +8,20 @@
 
 # references
 
+https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/index.html
+
+https://llvm.org/doxygen/AsmParser_8cpp_source.html
+
+https://github.com/llvm/llvm-project
+
+https://stackoverflow.com/questions/4581994/is-there-bnf-like-grammar-to-describe-llvm-ir
+
+https://en.wikipedia.org/wiki/Intermediate_representation
+
+https://www.infoworld.com/article/2261861/what-is-llvm-the-power-behind-swift-rust-clang-and-more.html
+
+https://viblo.asia/p/tim-hieu-chung-ve-llvm-1VgZv6zMZAw
+
 https://www.geeksforgeeks.org/introduction-of-compiler-design/
 
 https://web.stanford.edu/class/cs143/
