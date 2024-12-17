@@ -8,6 +8,16 @@
 
 # references
 
+https://srcclr.github.io/test-lean/chapters/08-symbolic.html
+
+https://github.com/renatahodovan/grammarinator
+
+https://arxiv.org/abs/2201.09448
+
+https://arxiv.org/pdf/2403.02583
+
+https://arxiv.org/pdf/2409.02326
+
 https://github.com/antlr/grammars-v4
 
 https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/index.html
@@ -18,11 +28,7 @@ https://github.com/llvm/llvm-project
 
 https://stackoverflow.com/questions/4581994/is-there-bnf-like-grammar-to-describe-llvm-ir
 
-https://en.wikipedia.org/wiki/Intermediate_representation
-
 https://www.infoworld.com/article/2261861/what-is-llvm-the-power-behind-swift-rust-clang-and-more.html
-
-https://viblo.asia/p/tim-hieu-chung-ve-llvm-1VgZv6zMZAw
 
 https://www.geeksforgeeks.org/introduction-of-compiler-design/
 
