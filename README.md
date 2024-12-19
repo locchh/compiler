@@ -12,12 +12,6 @@ https://srcclr.github.io/test-lean/chapters/08-symbolic.html
 
 https://github.com/renatahodovan/grammarinator
 
-https://arxiv.org/abs/2201.09448
-
-https://arxiv.org/pdf/2403.02583
-
-https://arxiv.org/pdf/2409.02326
-
 https://github.com/antlr/grammars-v4
 
 https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/index.html
